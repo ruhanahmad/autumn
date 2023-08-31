@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:autmn/screens/bottomNavigation.dart';
 import 'package:autmn/screens/homescreen.dart';
+import 'package:autmn/screens/requestCredientials.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _showPassword = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 String fname = '';
 String lname = '';
 String email = '';
@@ -24,6 +27,13 @@ String position = '';
 String employeeKey = '';
 String playerID = '';
    Future<void> _login() async {
+     String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      _showSnackbar('Please fill in both fields');
+    }
+    else {
     final String apiUrl = 'https://sandbox1.autumntrack.com/api/v2/login/?apikey=MYhsie8n4';
 
     final Map<String, String> body = {
@@ -55,7 +65,7 @@ String playerID = '';
   employeeKey = data['employeekey'];
   playerID = data['player_id'];
 
-      Get.to(()=>NextScreen(
+      Get.to(()=>NavigationBarScreen(
         // fname: fname,
         // lname: lname,
         // email: email,
@@ -69,6 +79,11 @@ String playerID = '';
       // Error handling for unsuccessful login
       print('Login failed: ${response.statusCode}');
     }
+    }
+  }
+
+   void _showSnackbar(String message) {
+   Get.snackbar('Error', '$message');
   }
   @override
   Widget build(BuildContext context) {
@@ -155,17 +170,22 @@ String playerID = '';
                   ),
                 ),
                  SizedBox(height: 20.0),
-                Container(
-                  width: 420.0,
-                  height: 49.0,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 2.0, color: Colors.black),
-                    borderRadius: BorderRadius.circular(27.0),
-                  ),
-                  child: Center(
-                    child: Text(
-                      'Request Credentials',
-                      style: TextStyle(fontSize: 16.0),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(()=>RequestCredentialsScreen());
+                  },
+                  child: Container(
+                    width: 420.0,
+                    height: 49.0,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 2.0, color: Colors.black),
+                      borderRadius: BorderRadius.circular(27.0),
+                    ),
+                    child: Center(
+                      child: Text(
+                        'Request Credentials',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
                     ),
                   ),
                 ),

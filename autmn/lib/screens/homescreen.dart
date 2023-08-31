@@ -45,7 +45,12 @@
 
 import 'dart:convert';
 
+import 'package:autmn/screens/news.dart';
+import 'package:autmn/screens/pendingScreen.dart';
+import 'package:autmn/screens/schedule.dart';
+import 'package:autmn/screens/successScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -121,7 +126,9 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
       appBar: AppBar(
         title: GestureDetector(
           onTap: (){
-            acceptInvitations();
+            // acceptInvitations();
+
+             Get.to(()=>NewsScreen ());
           },
           child: Text('Open Shifts')),
         centerTitle: true,
@@ -190,6 +197,13 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
                                 Map<String, dynamic> acceptResponse = await acceptInvitation(shift['id'], shift['user_instant_accept']);
                                 // You can store the accept response data in variables here if needed
                                 print('Accept Response: $acceptResponse');
+                                acceptResponse["message"]== "Success" ?  
+                               
+                                Get.to(()=>SuccessScreen(shiftDate:shift["date_of_shift"],shiftTime:shift["shift_start"],shiftTimeEnd:shift['shift_end'], ))
+                                :
+                                null
+                                ;
+                                 
                               } catch (error) {
                                 print('Error accepting invitation: $error');
                               }
