@@ -4,9 +4,11 @@ import 'dart:io';
 import 'package:autmn/screens/bottomNavigation.dart';
 import 'package:autmn/screens/homescreen.dart';
 import 'package:autmn/screens/requestCredientials.dart';
+import 'package:autmn/screens/resetScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -26,7 +28,29 @@ String role = '';
 String position = '';
 String employeeKey = '';
 String playerID = '';
+
+//  Future getPlayerId() async {
+//     try {
+//  var deviceState = await OneSignal.shared.getDeviceState();
+
+//     if (deviceState == null || deviceState.userId == null)
+//         return;
+
+//     notificationController.playerId = deviceState.userId!;
+//      print("playeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer" + notificationController.playerId);
+//    await  updateToken();
+//     }
+//     catch(e){
+//      Get.snackbar("title", "not getting PlayerID  ${e}");
+//     }
+    
+
+
+
+//   }
    Future<void> _login() async {
+
+
      String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
@@ -190,14 +214,19 @@ String playerID = '';
                   ),
                 ),
                 SizedBox(height: 20.0),
-                Container(
-                  width: 180.0,
-                  height: 35.0,
-                  color: Color(0xFFD9D9D9),
-                  child: Center(
-                    child: Text(
-                      'Forget Password',
-                      style: TextStyle(color: Colors.blue),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(()=>ResetScreen());
+                  },
+                  child: Container(
+                    width: 180.0,
+                    height: 35.0,
+                    color: Color(0xFFD9D9D9),
+                    child: Center(
+                      child: Text(
+                        'Forget Password',
+                        style: TextStyle(color: Colors.blue),
+                      ),
                     ),
                   ),
                 ),

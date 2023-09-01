@@ -6,12 +6,12 @@ import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
 
-class RequestCredentialsScreen extends StatefulWidget {
+class ResetScreen extends StatefulWidget {
   @override
-  _RequestCredentialsScreenState createState() => _RequestCredentialsScreenState();
+  _ResetScreenState createState() => _ResetScreenState();
 }
 
-class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
+class _ResetScreenState extends State<ResetScreen> {
  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
@@ -23,21 +23,23 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
     String firstName = _firstNameController.text.trim();
     String lastName = _lastNameController.text.trim();
 
-    if (email.isEmpty || firstName.isEmpty || lastName.isEmpty) {
-      _showSnackbar('Please fill in all fields');
+    if (email.isEmpty || firstName.isEmpty || lastName.isEmpty || firstName != lastName) {
+      _showSnackbar('Please fill in all fields or match your password');
       return;
     }
 
-    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/request/?apikey=MYhsie8n4';
+    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/reset/?apikey=MYhsie8n4';
     final Map<String, dynamic> requestData = {
-      "fac": "Autumn Demo",
+      "id": "1739",
       "email": email,
-      "fname": firstName,
-      "lname": lastName,
+      "newpass": firstName,
+      "confirmpass": lastName,
       
     };
 
     final response = await http.post(Uri.parse(apiUrl), body: requestData);
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
@@ -123,12 +125,13 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Request Credentials',
+                        'Reset Password',
                         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                       SizedBox(height: 10),
-                      Text('Please enter your information, and you will receive'),
-                      Text('your credentials within 24 hours.'),
+                      Text('Please enter your email to reset your password.if'),
+                       Text('you have an account you will receive email with'),
+                      Text('instruction to reset your password'),
                       SizedBox(height: 20),
                       TextFormField(
                         controller: _emailController,
@@ -136,49 +139,27 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
                       ),
                       TextFormField(
                         controller: _firstNameController,
-                        decoration: InputDecoration(labelText: 'First Name'),
+                        decoration: InputDecoration(labelText: 'new password'),
                       ),
                       TextFormField(
                         controller: _lastNameController,
-                        decoration: InputDecoration(labelText: 'Last Name'),
+                        decoration: InputDecoration(labelText: 'Confirm password'),
                       ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
-                            onPressed: _openFacilityList,
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.orange,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: Text(
-                              'Select your facility',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.arrow_drop_down),
-                            onPressed: _openFacilityList,
-                          ),
-                        ],
-                      ),
+                      
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: ()async{
                   await  _requestCredentials();
                 },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.black,
+                          primary: Colors.orange,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                           minimumSize: Size(50, 50),
                         ),
                         child: Text(
-                          'Request',
+                          'Reset Password',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

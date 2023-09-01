@@ -132,6 +132,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
           },
           child: Text('Open Shifts')),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,7 +145,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
             ),
           ),
           WeeklyCalendar(selectedDate: selectedDate, onSelectDate: _selectDate),
-          Expanded(
+          Expanded(flex: 1,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -171,6 +172,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
           ),
 
                Expanded(
+                flex: 3,
         child: FutureBuilder<List<Map<String, dynamic>>>(
           future: fetchShifts(),
           builder: (context, snapshot) {
@@ -185,31 +187,101 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
               itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                 var shift = snapshot.data![index];
-                  return Card(
-                    elevation: 4.0,
-                    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                    child: ListTile(
-                 title: Text('Position: ${shift['position']}'),
-                      subtitle: Text('Shift Start: ${shift['shift_start']}, Shift End: ${shift['shift_end']}, Shift End: ${shift['id']}'),
-                       trailing: ElevatedButton(
-                            onPressed: () async {
-                              try {
-                                Map<String, dynamic> acceptResponse = await acceptInvitation(shift['id'], shift['user_instant_accept']);
-                                // You can store the accept response data in variables here if needed
-                                print('Accept Response: $acceptResponse');
-                                acceptResponse["message"]== "Success" ?  
-                               
-                                Get.to(()=>SuccessScreen(shiftDate:shift["date_of_shift"],shiftTime:shift["shift_start"],shiftTimeEnd:shift['shift_end'], ))
-                                :
-                                null
-                                ;
-                                 
-                              } catch (error) {
-                                print('Error accepting invitation: $error');
-                              }
-                            },
-                            child: Text('Accept Invitation'),
-                          ),
+
+                final inputFormat = DateFormat('HH:mm'); // 'HH:mm' represents 24-hour format
+  final outputFormat = DateFormat('h:mm a'); // 'h:mm a' represents 12-hour format with AM/PM
+ String? strt ;
+  String? ebd ;
+  try {
+    final DateTime dateTime = inputFormat.parse(shift['shift_start']);
+    final DateTime dateTimeebd = inputFormat.parse(shift['shift_end']);
+    
+ strt  =  outputFormat.format(dateTime);
+  ebd =  outputFormat.format(dateTimeebd);
+  } catch (e) {
+    // Handle parsing errors here
+   'Invalid Time';
+  }
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      elevation: 20,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Container(
+                        
+                          margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                          child:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                            Column(children: [
+Text('${shift['position']}',style: TextStyle(color: Colors.green,fontSize: 20),),
+Text(" ${strt} -  ${ebd!}"),
+  shift["bonus"] == "0" ? Text("-"):Text("\$${shift['bonus']} "),
+
+                            ],),
+
+                               Column(children: [
+   ElevatedButton(
+                                   style: ElevatedButton.styleFrom(
+                primary: Colors.orange,
+                foregroundColor: Colors.white
+               
+                
+                ),
+
+                                      onPressed: () async {
+                                        try {
+                                          Map<String, dynamic> acceptResponse = await acceptInvitation(shift['id'], shift['user_instant_accept']);
+                                          // You can store the accept response data in variables here if needed
+                                          print('Accept Response: $acceptResponse');
+                                          acceptResponse["message"]== "Success" ?  
+                                         
+                                          Get.to(()=>SuccessScreen(shiftDate:shift["date_of_shift"],shiftTime:shift["shift_start"],shiftTimeEnd:shift['shift_end'], ))
+                                          :
+                                          null
+                                          ;
+                                           
+                                        } catch (error) {
+                                          print('Error accepting invitation: $error');
+                                        }
+                                      },
+                                      child: Text('Accept Shift'),
+                                    ),
+                                     shift["approved"] == "1" || shift["user_instant_accept"] == "1" ?
+                                  Row(
+                                    children: [
+                                      IconButton(onPressed: (){}, icon: Icon(Icons.electric_bolt_sharp)),
+                                      Text("Instant Accept")
+                                    ],
+
+                                  ) 
+                                  :
+                                  Container()
+                            ],),
+                          ],)
+                          
+                          
+                          //  ListTile(
+                          //              title: 
+                          //   // subtitle: Text('S ${shift['shift_start']} - ${shift['shift_end']}'),
+                          //   subtitle: 
+                          //    trailing: 
+                          //    Column(
+                          //      children: [
+                              
+
+                              
+
+                                  
+                                  
+                                    
+                          //      ],
+                          //    ),
+                          // ),
+                        ),
+                      ),
                     ),
                   );
                 },

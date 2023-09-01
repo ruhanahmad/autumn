@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 
 
 class MyShiftsScreen extends StatelessWidget {
@@ -13,6 +15,7 @@ class MyShiftsScreen extends StatelessWidget {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
+      print(jsonResponse['data']);
       return List<Map<String, dynamic>>.from(jsonResponse['data']);
     } else {
       throw Exception('Failed to fetch pending shifts');
@@ -52,6 +55,35 @@ class MyShiftsScreen extends StatelessWidget {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         var shift = snapshot.data![index];
+
+                            final inputFormat = DateFormat('HH:mm'); // 'HH:mm' represents 24-hour format
+  final outputFormat = DateFormat('h:mm a'); // 'h:mm a' represents 12-hour format with AM/PM
+ String? strt ;
+  String? ebd ;
+  try {
+    final DateTime dateTime = inputFormat.parse(shift['time_start']);
+    final DateTime dateTimeebd = inputFormat.parse(shift['time_end']);
+    
+ strt  =  outputFormat.format(dateTime);
+  ebd =  outputFormat.format(dateTimeebd);
+  }
+   catch (e) {
+    // Handle parsing errors here
+   'Invalid Time';
+  }
+  String? formattedDate ;
+try {
+DateTime inputDate = DateTime.parse(shift['date']);
+formattedDate = DateFormat('EEEE, MM /dd').format(inputDate);
+print(formattedDate);
+}
+
+catch (e) {
+    // Handle parsing errors here
+   'Invalid Time';
+  }
+
+
                         return Container(
                           color: Colors.white,
                          
@@ -82,11 +114,11 @@ class MyShiftsScreen extends StatelessWidget {
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        '${shift['time_start']} - ${shift['time_end']}',
+                                        '$strt - $ebd',
                                       ),
                                       SizedBox(height: 8),
                                       Text(
-                                        shift['bonus'] == "0" ? 'No Bonus' : 'Bonus: ${shift['bonus']}',
+                                        shift['bonus'] == "0" ? '' : 'Bonus: ${shift['bonus']}',
                                       ),
                                     ],
                                   ),
@@ -104,8 +136,9 @@ class MyShiftsScreen extends StatelessWidget {
                                         ),
                                       ),
                                       SizedBox(height: 8),
+
                                       Text(
-                                        shift['date'],
+                                        formattedDate!,
                                       ),
                                     ],
                                   ),
