@@ -1,6 +1,7 @@
 import 'package:autmn/screens/homescreen.dart';
 import 'package:autmn/screens/news.dart';
 import 'package:autmn/screens/pendingScreen.dart';
+import 'package:autmn/screens/profile.dart';
 import 'package:autmn/screens/schedule.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
     MyShiftsScreen(),
     ScheduledScreen(),
     NewsScreen(),
-    NewsScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {

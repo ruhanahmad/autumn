@@ -123,9 +123,10 @@ String playerID = '';
               children: [
                 SizedBox(height: 50.0),
                 Container(
-                  width: 70.0,
-                  height: 70.0,
-                  color: Colors.blue, // Replace with your logo
+                  width: 100.0,
+                  height: 100.0,
+                  decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/atnav.png"),fit:BoxFit.cover )),
+                  // Replace with your logo
                 ),
                 SizedBox(height: 20.0),
                 Text(

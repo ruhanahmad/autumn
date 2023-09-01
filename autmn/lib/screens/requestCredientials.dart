@@ -16,21 +16,80 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   String selectedFacility = '';
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+ List<dynamic> facilities = [];
+
+  Future<void> _fetchFacilities() async {
+    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/facilities/?apikey=MYhsie8n4';
+
+    final response = await http.get(Uri.parse(apiUrl));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      List<dynamic> facilityData = jsonResponse['data'];
+
+      setState(() {
+        facilities = facilityData.map((facility) => facility['fac']).toList();
+      });
+
+      _showFacilitiesBottomSheet();
+    } else {
+      // Handle error if API request fails
+      _showErrorSnackbar();
+    }
+  }
+
+  void _showFacilitiesBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return ListView(
+          children: facilities.map((fac) {
+            return ListTile(
+              title: Text(fac),
+              onTap: () {
+                 setState(() {
+                  selectedFacility = fac;
+                });
+                print( selectedFacility);
+                // Handle selection if needed
+                Navigator.pop(context);
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  void _showErrorSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error fetching facilities. Please try again later.'),
+      ),
+    );
+  }
+
+
+
+
+
 
    Future<void> _requestCredentials() async {
     String email = _emailController.text.trim();
     String firstName = _firstNameController.text.trim();
     String lastName = _lastNameController.text.trim();
 
-    if (email.isEmpty || firstName.isEmpty || lastName.isEmpty) {
+    if (email.isEmpty || firstName.isEmpty || lastName.isEmpty ||  selectedFacility == "") {
       _showSnackbar('Please fill in all fields');
       return;
     }
 
     final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/request/?apikey=MYhsie8n4';
     final Map<String, dynamic> requestData = {
-      "fac": "Autumn Demo",
+      "fac": selectedFacility,
       "email": email,
       "fname": firstName,
       "lname": lastName,
@@ -45,6 +104,7 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
       String message = jsonResponse['message'];
 
       if (message == 'Success') {
+         _showSnackbars('Sent Successful ');
       Get.to(()=>LoginScreen());
         // Redirect to login screen or navigate back to previous screen
       } else {
@@ -58,7 +118,9 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
   void _showSnackbar(String message) {
   Get.snackbar("Error", message);
   }
-
+ void _showSnackbars(String message) {
+  Get.snackbar("Success", message);
+  }
 
 
   void _openFacilityList() {
@@ -147,7 +209,7 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ElevatedButton(
-                            onPressed: _openFacilityList,
+                            onPressed:_fetchFacilities,
                             style: ElevatedButton.styleFrom(
                               primary: Colors.orange,
                               shape: RoundedRectangleBorder(
@@ -161,14 +223,17 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
                           ),
                           IconButton(
                             icon: Icon(Icons.arrow_drop_down),
-                            onPressed: _openFacilityList,
+                            onPressed: _fetchFacilities,
                           ),
                         ],
                       ),
                       SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: ()async{
-                  await  _requestCredentials();
+                  await  
+                  
+          
+                  _requestCredentials();
                 },
                         style: ElevatedButton.styleFrom(
                           primary: Colors.black,

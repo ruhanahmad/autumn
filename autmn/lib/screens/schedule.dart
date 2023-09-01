@@ -106,7 +106,15 @@ catch (e) {
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
-                                        
+                                            SizedBox(height: 8),
+                                             shift['appfill'] == true?
+                                         Text(
+                                           "Shift Pickup" ,
+                                            style: TextStyle(
+                                              color:  Colors.red ,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ):Container(),
                                           SizedBox(height: 8),
                                           Text(
                                             '$strt - $ebd',
