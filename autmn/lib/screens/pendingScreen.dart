@@ -1,4 +1,6 @@
+import 'package:autmn/screens/userController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,9 +9,10 @@ import 'package:intl/intl.dart';
 
 
 class MyShiftsScreen extends StatelessWidget {
+   UserContoller userContoller = Get.put(UserContoller()); 
   Future<List<Map<String, dynamic>>> fetchPendingShifts() async {
     final apiUrl =
-        'https://sandbox1.autumntrack.com/api/v2/pending/?apikey=MYhsie8n4&email=demo@autumnhc.net';
+        'https://sandbox1.autumntrack.com/api/v2/pending/?apikey=MYhsie8n4&email=${userContoller.email}';
 
     final response = await http.get(Uri.parse(apiUrl));
 
@@ -26,7 +29,7 @@ class MyShiftsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Shifts'),
+        title: Text('My Pending Shifts'),
         centerTitle: true,
       ),
       body: Center(
@@ -34,17 +37,17 @@ class MyShiftsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              'All Your Shifts Pickup',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            // Text(
+            //   'All Your Shifts Pickup',
+            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // ),
             SizedBox(height: 20),
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
                 future: fetchPendingShifts(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return Container();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.data == null || snapshot.data!.isEmpty) {
@@ -84,66 +87,80 @@ catch (e) {
   }
 
 
-                        return Container(
-                          color: Colors.white,
-                         
-                          
-                          margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                         
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Material(
+                             borderRadius: BorderRadius.circular(15),
+                                              elevation: 20,
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Container(
+                                
+                               decoration: BoxDecoration(
+                              
+                               // Replace with your desired background color
+                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
+                              ),
+                                
+                                margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                               
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        shift['approved'] == '1' ? 'Approved' : 'Pending',
-                                        style: TextStyle(
-                                          color: shift['approved'] == '1' ? Colors.green : Colors.yellow,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20,
+                                      Expanded(
+                                        flex: 3,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              shift['approved'] == '1' ? 'Approved' : 'Pending',
+                                              style: TextStyle(
+                                                color: shift['approved'] == '1' ? Colors.green : Colors.orange,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              shift['pos'],
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              '$strt - $ebd',
+                                            ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              shift['bonus'] == "0" ? '' : 'Bonus: ${shift['bonus']}',
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        shift['pos'],
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        '$strt - $ebd',
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        shift['bonus'] == "0" ? '' : 'Bonus: ${shift['bonus']}',
+                                      Expanded(
+                                        flex: 3,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              'Date of Shift',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            SizedBox(height: 8),
+                                                    
+                                            Text(
+                                              formattedDate!,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        'Date of Shift',
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 12,
-                                        ),
-                                      ),
-                                      SizedBox(height: 8),
-
-                                      Text(
-                                        formattedDate!,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         );

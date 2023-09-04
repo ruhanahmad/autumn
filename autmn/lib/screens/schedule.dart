@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
 
+import 'userController.dart';
+
 
 class ScheduledScreen extends StatelessWidget {
+   UserContoller userContoller = Get.put(UserContoller()); 
   Future<List<Map<String, dynamic>>> fetchScheduledShifts() async {
     final apiUrl =
-        'https://sandbox1.autumntrack.com/api/v2/schedule/?apikey=MYhsie8n4&email=demo@autumnhc.net';
+        'https://sandbox1.autumntrack.com/api/v2/schedule/?apikey=MYhsie8n4&email=${userContoller.email}';
 
     final response = await http.get(Uri.parse(apiUrl));
 
@@ -43,7 +47,7 @@ class ScheduledScreen extends StatelessWidget {
                 future: fetchScheduledShifts(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
+                    return Container();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.data == null || snapshot.data!.isEmpty) {
@@ -86,63 +90,73 @@ catch (e) {
    'Invalid Time';
   }
 
-                            return Container(
-                            
-                              margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                             
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 3,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Material(
+                                borderRadius: BorderRadius.circular(15),
+                                                elevation: 20,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Container(
+                                  
+                                    margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                   
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
                                         children: [
-                                          Text(
-                                            shift['dayOfsched'] == null ? "No Day" : shift['dayOfsched'] ,
-                                            style: TextStyle(
-                                              color:  Colors.green ,
-                                              fontWeight: FontWeight.bold,
+                                          Expanded(
+                                            flex: 3,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  shift['dayOfsched'] == null ? "No Day" : shift['dayOfsched'] ,
+                                                  style: TextStyle(
+                                                    color:  Colors.green ,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                  SizedBox(height: 8),
+                                                   shift['appfill'] == true?
+                                               Text(
+                                                 "Shift Pickup" ,
+                                                  style: TextStyle(
+                                                    color:  Colors.red ,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ):Container(),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  '$strt - $ebd',
+                                                ),
+                                               
+                                              ],
                                             ),
                                           ),
-                                            SizedBox(height: 8),
-                                             shift['appfill'] == true?
-                                         Text(
-                                           "Shift Pickup" ,
-                                            style: TextStyle(
-                                              color:  Colors.red ,
-                                              fontWeight: FontWeight.bold,
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              children: [
+                                                Text(
+                                                  'Date of Shift',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                SizedBox(height: 8),
+                                                Text(
+                                                  shift['dateOfSched'] == "" ? "No": formattedDate! ,
+                                                ),
+                                              ],
                                             ),
-                                          ):Container(),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            '$strt - $ebd',
                                           ),
-                                         
                                         ],
                                       ),
                                     ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            'Date of Shift',
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12,
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            shift['dateOfSched'] == "" ? "No": formattedDate! ,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             );

@@ -49,6 +49,7 @@ import 'package:autmn/screens/news.dart';
 import 'package:autmn/screens/pendingScreen.dart';
 import 'package:autmn/screens/schedule.dart';
 import 'package:autmn/screens/successScreen.dart';
+import 'package:autmn/screens/userController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -56,6 +57,7 @@ import 'package:http/http.dart' as http;
 
 
 class NextScreen extends StatefulWidget {
+
   @override
   _NextScreenState createState() => _NextScreenState();
 }
@@ -71,22 +73,71 @@ class _NextScreenState extends State<NextScreen> {
       formatDateVar = DateFormat('yyyy-MM-dd').format(selectedDate);
     });
   }
+List<Map<String, dynamic>>? apiData; // List of Map to store API response data
 
+  // API URL
+  
 
+  // Function to fetch data from the API
+//  Future<List<Map<String, dynamic>>> fetchShifts() async {
+//    final String apiUrl =
+//       'https://sandbox1.autumntrack.com/api/v2/user-open-shifts/?apikey=MYhsie8n4&email=demo@autumnhc.net&date=$formatDateVar';
+//     try {
+//       final response = await http.get(Uri.parse(apiUrl));
+
+//       if (response.statusCode == 200) {
+//         // Parse the JSON response
+//         final List<dynamic> responseData = json.decode(response.body);
+
+//         // Cast the data to the expected type
+//         // final List<Map<String, dynamic>> data =
+//         //     responseData.cast<Map<String, dynamic>>();
+//       return List<Map<String, dynamic>>.from(responseData);
+//       } else {
+//         // Handle API error here
+//         throw Exception('Failed to load data');
+//       }
+//     } catch (error) {
+//       // Handle network or other errors here
+//       throw Exception('Failed to load data');
+//     }
+//   }
+ UserContoller userContoller = Get.put(UserContoller()); 
  Future<List<Map<String, dynamic>>> fetchShifts() async {
-    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/user-open-shifts/?apikey=MYhsie8n4&email=demo@autumnhc.net&date=$formatDateVar';
-
+  print(userContoller.email);
+    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/user-open-shifts/?apikey=MYhsie8n4&email=${userContoller.email}&date=$formatDateVar';
+ try {
     final response = await http.post(Uri.parse(apiUrl));
-
+ print(response.statusCode);
     if (response.statusCode == 200) {
+
       final List<dynamic> jsonResponse = json.decode(response.body);
-      print(jsonResponse);
+     jsonResponse.isEmpty ?
+        Get.snackbar("title", "message"):
+
+   
      
+ 
+    
+      print(response.body);
+      print(jsonResponse);
       return List<Map<String, dynamic>>.from(jsonResponse);
     
+    
     } else {
+      // Get.snackbar("sd", "message");
       throw Exception('Failed to fetch shifts');
     }
+ }
+   catch (error) {
+    return
+      // Handle network or other errors here
+     [
+    
+    ];
+    }
+    
+    
   }
 
 Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccept) async {
@@ -139,13 +190,18 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
         children: [
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Week of ${DateFormat('MMMM d, y').format(selectedDate)}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            child: Center(
+              child: Text(
+                'Week of ${DateFormat('MMMM d, y').format(selectedDate)}',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
             ),
           ),
           WeeklyCalendar(selectedDate: selectedDate, onSelectDate: _selectDate),
-          Expanded(flex: 1,
+          Container(
+            height: MediaQuery.of(context).size.height /2-400,
+            width: MediaQuery.of(context).size.width,
+            // flex: 1,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +228,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
           ),
 
                Expanded(
-                flex: 3,
+                // flex: 1,
         child: FutureBuilder<List<Map<String, dynamic>>>(
           future: fetchShifts(),
           builder: (context, snapshot) {
@@ -180,13 +236,15 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            } 
+           else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return Center(child: Text('No shifts available'));
-            } else {
+            } 
+             else {
               return ListView.builder(
               itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
-                var shift = snapshot.data![index];
+                 var shift = snapshot.data![index];
 
                 final inputFormat = DateFormat('HH:mm'); // 'HH:mm' represents 24-hour format
   final outputFormat = DateFormat('h:mm a'); // 'h:mm a' represents 12-hour format with AM/PM
@@ -202,14 +260,28 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
     // Handle parsing errors here
    'Invalid Time';
   }
+  String? formattedDate ;
+try {
+DateTime inputDate = DateTime.parse(shift['date_of_shift']);
+formattedDate = DateFormat('EEEE, MM /dd').format(inputDate);
+print(formattedDate);
+}
+
+catch (e) {
+    // Handle parsing errors here
+   'Invalid Time';
+  }
+
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Material(
+                    child: 
+                    Material(
+                      borderRadius: BorderRadius.circular(15),
                       elevation: 20,
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Container(
-                        
+                          
                           margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                           child:
                           Row(
@@ -218,7 +290,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
                             Column(children: [
 Text('${shift['position']}',style: TextStyle(color: Colors.green,fontSize: 20),),
 Text(" ${strt} -  ${ebd!}"),
-  shift["bonus"] == "0" ? Text("-"):Text("\$${shift['bonus']} "),
+  shift["bonus"] == "0" ? Text(""):Text(" Bonus:\$${shift['bonus']} "),
 
                             ],),
 
@@ -238,7 +310,7 @@ Text(" ${strt} -  ${ebd!}"),
                                           print('Accept Response: $acceptResponse');
                                           acceptResponse["message"]== "Success" ?  
                                          
-                                          Get.to(()=>SuccessScreen(shiftDate:shift["date_of_shift"],shiftTime:shift["shift_start"],shiftTimeEnd:shift['shift_end'], ))
+                                          Get.to(()=>SuccessScreen(shiftDate:formattedDate!,shiftTime:strt!,shiftTimeEnd:ebd!,approved:shift["approved"],userInstant:shift["user_instant_accept"] ))
                                           :
                                           null
                                           ;
@@ -314,7 +386,7 @@ class WeeklyCalendar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 DateTime prevWeek = selectedDate.subtract(Duration(days: 7));
                 onSelectDate(prevWeek);
@@ -334,7 +406,7 @@ class WeeklyCalendar extends StatelessWidget {
                       child: Text(
                         DateFormat('E').format(days[i]),
                         style: TextStyle(
-                          fontWeight: days[i].day == selectedDate.day ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: days[i].day == selectedDate.day ? FontWeight.bold : FontWeight.bold,
                         ),
                       ),
                     ),
@@ -342,7 +414,7 @@ class WeeklyCalendar extends StatelessWidget {
               ],
             ),
             IconButton(
-              icon: Icon(Icons.arrow_forward),
+              icon: Icon(Icons.arrow_forward_ios),
               onPressed: () {
                 DateTime nextWeek = selectedDate.add(Duration(days: 7));
                 onSelectDate(nextWeek);

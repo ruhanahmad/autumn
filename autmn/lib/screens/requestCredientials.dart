@@ -228,6 +228,8 @@ class _RequestCredentialsScreenState extends State<RequestCredentialsScreen> {
                         ],
                       ),
                       SizedBox(height: 20),
+                       selectedFacility == "" ? Text('No Facility Selected'):Text("Selected Facility:${selectedFacility} "),
+                         SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: ()async{
                   await  

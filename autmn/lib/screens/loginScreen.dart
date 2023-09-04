@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'userController.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  UserContoller userContoller = Get.put(UserContoller()); 
 String fname = '';
 String lname = '';
 String email = '';
@@ -64,8 +66,8 @@ String playerID = '';
       // 'user': _emailController.text,
       // 'pass': _passwordController.text,
       // 'player_id': 'sadas',
-       'user': "demo@autumnhc.net",
-      'pass': "Test1234",
+       'user': email,
+      'pass': password,
       'player_id': 'sadas',
     };
 
@@ -88,18 +90,20 @@ String playerID = '';
   position = data['position'];
   employeeKey = data['employeekey'];
   playerID = data['player_id'];
-
+userContoller.email =email;
+userContoller.update();
       Get.to(()=>NavigationBarScreen(
-        // fname: fname,
-        // lname: lname,
-        // email: email,
-        // facility: facility,
-        // role: role,
-        // position: position,
-        // employeeKey: employeeKey,
-        // playerID: playerID,
+        fname: fname,
+        lname: lname,
+        email: email,
+        facility: facility,
+        role: role,
+        position: position,
+        employeeKey: employeeKey,
+        playerID: playerID,
       ),);
     } else {
+       _showSnackbar('Please Provide Correct Credientials');
       // Error handling for unsuccessful login
       print('Login failed: ${response.statusCode}');
     }
@@ -125,7 +129,7 @@ String playerID = '';
                 Container(
                   width: 100.0,
                   height: 100.0,
-                  decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/atnav.png"),fit:BoxFit.cover )),
+                  decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/atnav.png"),fit:BoxFit.contain )),
                   // Replace with your logo
                 ),
                 SizedBox(height: 20.0),

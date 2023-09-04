@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:autmn/screens/userController.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,11 +8,13 @@ import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatelessWidget {
 
+UserContoller userContoller = Get.put(UserContoller());
+
 
   Future<void> _requestCredentials() async {
    
 
-    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/close_account/?apikey=MYhsie8n4&email=ranaruhan123@gmail.com';
+    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/close_account/?apikey=MYhsie8n4&email=${userContoller.email}';
     
 
     final response = await http.post(Uri.parse(apiUrl));
