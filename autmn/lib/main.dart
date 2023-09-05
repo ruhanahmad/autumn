@@ -1,4 +1,6 @@
 import 'package:autmn/screens/loginScreen.dart';
+import 'package:autmn/screens/test.dart';
+import 'package:autmn/screens/testtwo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +15,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+       initialRoute: '/',
+      getPages: [
+        // GetPage(name: '/', page: () => HomePage()),
+        GetPage(name: '/login', page: () => LoginScreen()),
+      ],
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -33,7 +41,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home:LoginScreen(),
     );
   }
 }

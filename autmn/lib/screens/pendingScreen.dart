@@ -25,12 +25,46 @@ class MyShiftsScreen extends StatelessWidget {
     }
   }
 
+
+
+   Future<void> _declineShift(String id) async {
+   
+
+    final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/decline/?apikey=MYhsie8n4&id=$id&empkey=13110';
+    
+
+    final response = await http.post(Uri.parse(apiUrl));
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      String message = jsonResponse['message'];
+
+      if (message == 'Success') {
+         _showSnackbars('Cancelled Successful ');
+ 
+        // Redirect to login screen or navigate back to previous screen
+      } else {
+        _showSnackbar('Request failed. Please try again.');
+      }
+    } else {
+      _showSnackbar('Error occurred. Please try again later.');
+    }
+  }
+  void _showSnackbars(String message) {
+  Get.snackbar("Success", message);
+  }
+   void _showSnackbar(String message) {
+  Get.snackbar("Error", message);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Pending Shifts'),
+        title: Text('My Pending Shifts',style: TextStyle(fontWeight: FontWeight.bold),),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child: Column(
@@ -93,7 +127,7 @@ catch (e) {
                              borderRadius: BorderRadius.circular(15),
                                               elevation: 20,
                             child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(12.0),
                               child: Container(
                                 
                                decoration: BoxDecoration(
@@ -102,7 +136,7 @@ catch (e) {
                                 borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
                               ),
                                 
-                                margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                margin: EdgeInsets.symmetric(horizontal: 16.0,),
                                
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
@@ -112,6 +146,7 @@ catch (e) {
                                         flex: 3,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Text(
                                               shift['approved'] == '1' ? 'Approved' : 'Pending',
@@ -141,19 +176,47 @@ catch (e) {
                                         flex: 3,
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Date of Shift',
                                               style: TextStyle(
-                                                color: Colors.grey,
+                                                color: Colors.black,
                                                 fontSize: 12,
                                               ),
                                             ),
                                             SizedBox(height: 8),
                                                     
                                             Text(
-                                              formattedDate!,
+                                              formattedDate!, style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                              ),
                                             ),
+                                            SizedBox(height: 5,),
+ElevatedButton(
+                                   style: ElevatedButton.styleFrom(
+                                    
+ padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                primary: Colors.red,
+                foregroundColor: Colors.white,
+                
+               
+                
+                ),
+
+                                      onPressed: () async {
+                                        try {
+                                         _declineShift(shift["id"]);
+                                           
+                                        } catch (error) {
+                                          print('Error accepting invitation: $error');
+                                        }
+                                      },
+                                      child: Text('Cancel Shift',style: TextStyle(fontSize: 10),),
+                                    ),
+
+                                            SizedBox(height:MediaQuery.of(context).size.height/2 -420),
                                           ],
                                         ),
                                       ),

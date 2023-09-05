@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -91,6 +92,8 @@ String playerID = '';
   employeeKey = data['employeekey'];
   playerID = data['player_id'];
 userContoller.email =email;
+userContoller.fname =fname;
+userContoller.lname =lname;
 userContoller.update();
       Get.to(()=>NavigationBarScreen(
         fname: fname,
@@ -113,142 +116,194 @@ userContoller.update();
    void _showSnackbar(String message) {
    Get.snackbar('Error', '$message');
   }
+
+   bool _obscureText = true; 
+   
   @override
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 22.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 50.0),
-                Container(
-                  width: 100.0,
-                  height: 100.0,
-                  decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/atnav.png"),fit:BoxFit.contain )),
-                  // Replace with your logo
-                ),
-                SizedBox(height: 20.0),
-                Text(
-                  'Welcome',
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                  'Please Sign in to continue',
-                  style: TextStyle(fontSize: 14.0),
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                   controller: _emailController,
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                      borderSide: BorderSide(width: 10.0, color: Colors.black),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+    return WillPopScope(
+       onWillPop: () async {
+         return await _confirmExit(context); // Show confirmation dialog and handle exit.
+        // return false;
+      },
+      child: Scaffold(
+        body: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 22.0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 50.0),
+                  Container(
+                    width: 100.0,
+                    height: 100.0,
+                    decoration: BoxDecoration(image: DecorationImage(image: AssetImage("assets/images/atnav.png"),fit:BoxFit.contain )),
+                    // Replace with your logo
                   ),
-                ),
-                SizedBox(height: 15.0),
-                TextFormField(
-                  controller: _passwordController,
-                 obscureText: !_showPassword,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(27.0),
-                      borderSide: BorderSide(width: 2.0, color: Colors.black),
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Welcome',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(height: 10.0),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _showPassword,
-                      onChanged: (value) {
-                        setState(() {
-                          _showPassword = value!;
-                        });
-                      },
-                    ),
-                    Text('Show Password'),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Container(
-                  width: 420.0,
-                  height: 49.0,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 2.0, color: Colors.black),
-                    borderRadius: BorderRadius.circular(27.0),
+                  SizedBox(height: 10.0),
+                  Text(
+                    'Please Sign in to continue',
+                    style: TextStyle(fontSize: 14.0),
                   ),
-                  child: 
-                 TextButton(
-                    onPressed: _login,
-                    child: Text(
-                      'Login',
-                      style: TextStyle(fontSize: 16.0),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                     controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(27.0),
+                        borderSide: BorderSide(width: 10.0, color: Colors.black),
+                      ),
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
                     ),
                   ),
-                ),
-                 SizedBox(height: 20.0),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(()=>RequestCredentialsScreen());
-                  },
-                  child: Container(
+                  SizedBox(height: 15.0),
+                  TextFormField(
+                    controller: _passwordController,
+                  //  obscureText: !_showPassword,
+                  obscureText: _obscureText,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(27.0),
+                        borderSide: BorderSide(width: 2.0, color: Colors.black),
+                      ),
+                      
+                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+                      suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                    ),
+                  ),
+                  ),
+                  SizedBox(height: 10.0),
+                  // Row(
+                  //   children: [
+                  //     Checkbox(
+                  //       value: _showPassword,
+                  //       onChanged: (value) {
+                  //         setState(() {
+                  //           _showPassword = value!;
+                  //         });
+                  //       },
+                  //     ),
+                  //     Text('Show Password'),
+                  //   ],
+                  // ),
+                  SizedBox(height: 20.0),
+                  Container(
                     width: 420.0,
                     height: 49.0,
                     decoration: BoxDecoration(
                       border: Border.all(width: 2.0, color: Colors.black),
                       borderRadius: BorderRadius.circular(27.0),
                     ),
-                    child: Center(
+                    child: 
+                   TextButton(
+                      onPressed: _login,
                       child: Text(
-                        'Request Credentials',
-                        style: TextStyle(fontSize: 16.0),
+                        'Login',
+                        style: TextStyle(fontSize: 16.0,color: Colors.black),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20.0),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(()=>ResetScreen());
-                  },
-                  child: Container(
-                    width: 180.0,
-                    height: 35.0,
-                    color: Color(0xFFD9D9D9),
-                    child: Center(
-                      child: Text(
-                        'Forget Password',
-                        style: TextStyle(color: Colors.blue),
+                   SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(()=>RequestCredentialsScreen());
+                    },
+                    child: Container(
+                      width: 420.0,
+                      height: 49.0,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 2.0, color: Colors.black),
+                        borderRadius: BorderRadius.circular(27.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Request Credentials',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20.0),
-                Text(
-                  'Any questions and issues please email',
-                  style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black54),
-                ),
-                Text(
-                  'support@autumntrack.com',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-              ],
+                  SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(()=>ResetScreen());
+                    },
+                    child: Container(
+                      width: 180.0,
+                      height: 35.0,
+                      color: Color(0xFFD9D9D9),
+                      child: Center(
+                        child: Text(
+                          'Forgot Password',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
+                  Text(
+                    'Any questions and issues please email',
+                    style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black54),
+                  ),
+                  Text(
+                    'support@autumntrack.com',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+  Future<bool> _confirmExit(BuildContext context) async {
+    Completer<bool> completer = Completer<bool>();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Confirm Exit'),
+          content: Text('Are you sure you want to quit the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // Cancel exit.
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true); // Confirm exit.
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    ).then((value) {
+      completer.complete(value ?? false);
+    });
+
+    return completer.future;
   }
 }

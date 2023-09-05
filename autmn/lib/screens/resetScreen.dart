@@ -98,7 +98,7 @@ class _ResetScreenState extends State<ResetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Request Credentials'),
+        title: Text('Request Credentials',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
       ),
       body: Center(
         child: Padding(

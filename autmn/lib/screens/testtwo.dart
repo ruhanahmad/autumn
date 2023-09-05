@@ -56,92 +56,15 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 
-class NextScreen extends StatefulWidget {
+class NextScreenlolo extends StatefulWidget {
 
   @override
-  _NextScreenState createState() => _NextScreenState();
+  _NextScreenloloState createState() => _NextScreenloloState();
 }
 
-class _NextScreenState extends State<NextScreen> {
+class _NextScreenloloState extends State<NextScreenlolo> {
   DateTime selectedDate = DateTime.now();
    String formatDateVar = DateFormat('yyyy-MM-dd').format(DateTime.now()); // Default value
- List<dynamic> openShiftDates = [];
-
-
- @override
-  void initState() {
-    super.initState();
-    fetchOpenShiftss();
-  }
-
-    Future<void> fetchOpenShifts() async {
-    final apiKey = 'YOUR_API_KEY';
-    final email = 'demo@autumnhc.net';
-    final date = DateFormat('yyyy-MM-dd').format(selectedDate);
-
-    final apiUrl = Uri.parse('https://sandbox1.autumntrack.com/api/v2/week-open-shifts/?apikey=$apiKey&email=$email&date=$date');
-
-    try {
-      final response = await http.get(apiUrl);
-     print("aasd ${response.statusCode}" );
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-
-        if (data['data'] != null) {
-          final openShifts = List<String>.from(data['data'].map((shift) => shift['date']));
-          setState(() {
-            openShiftDates = openShifts;
-          });
-        }
-      }
-    } catch (error) {
-      print('Error fetching open shifts: $error');
-    }
-  }
-  Future<void> fetchOpenShiftss() async {
-  final apiKey = 'MYhsie8n4';
-  final email = 'demo@autumnhc.net';
-  final date = DateFormat('yyyy-MM-dd').format(selectedDate);
-
-  final apiUrl = Uri.parse('https://sandbox1.autumntrack.com/api/v2/week-open-shifts/?apikey=MYhsie8n4&email=demo@autumnhc.net&date=$date');
-try {
-    final response = await http.post(apiUrl);
-   
-    if (response.statusCode == 200) {
-       final  responseData =
-            json.decode(response.body) ;
-
-  // Print the response data for inspection
-  print(responseData);
-        // final List<dynamic> responseData =
-        //     json.decode(response.body) as List<dynamic>;
-      // final openShifts = responseData
-      //     .where((shift) => shift['error'] == null)
-      //     .map<String>((shift) => shift['date'])
-      //     .toList();
-        setState(() {
-          // Extract dates from the response data
-         openShiftDates = responseData
-          .where((shift) => shift['data'] != "No Open Shifts")
-          .map<dynamic>((shift) => shift['date'])
-          .toList();
-
-          print("sadasD $openShiftDates");
-        });
-
-  // setState(() {
-  //         // Extract dates from the response data
-  //         openShiftDates = responseData
-  //             .map((data) => data['date'] as String)
-  //             .toList();
-  //       });
-
-        print(openShiftDates);
-    }
-  } catch (error) {
-    print('Error fetching open shifts: $error');
-  }
-}
 
 
   void _selectDate(DateTime date) {
@@ -255,8 +178,8 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
         title: GestureDetector(
           onTap: (){
             // acceptInvitations();
-fetchOpenShiftss();
-            //  Get.to(()=>NewsScreen ());
+
+             Get.to(()=>NewsScreen ());
           },
           child: Text('Open Shifts',style: TextStyle(fontWeight: FontWeight.bold),)),
         centerTitle: true,
@@ -267,14 +190,52 @@ fetchOpenShiftss();
         children: [
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Text(
-                'The Week of ${DateFormat('MMMM d, y').format(selectedDate)}',
-                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+            child: 
+//  Center(
+  
+//      child: Stack(
+//           alignment: Alignment.center,
+//           children: [
+//             Text(
+//              'The Week of ${DateFormat('MMMM d').format(selectedDate)}',
+//               style: TextStyle(
+//                 fontSize: 18.0, // Adjust the size as needed
+//               ),
+//             ),
+//             Positioned(
+//               top: -6, // Adjust this value to position the "rd" as desired
+//               right: 4,
+              
+              
+              
+//               child: Text(
+//             'rd', // The superscript text
+//             style: TextStyle(
+//               fontSize: 12.0, // Adjust the size as needed
+//             ),
+//               ),
+//             ),
+            
+//           ],
+//         ),
+ 
+//  )
+            Center(
+              child: Row(
+                children: [
+                  Text(
+                     'The Week of ${DateFormat('MMMM d').format(selectedDate)}',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                   Text(
+                     'rd',
+                    style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
             ),
           ),
-          WeeklyCalendar(selectedDate: selectedDate, onSelectDate: _selectDate,openShiftDates: openShiftDates,),
+          WeeklyCalendar(selectedDate: selectedDate, onSelectDate: _selectDate),
           Container(
             height: MediaQuery.of(context).size.height /2-400,
             width: MediaQuery.of(context).size.width,
@@ -451,13 +412,12 @@ Text(" ${strt} -  ${ebd!}"),
 class WeeklyCalendar extends StatelessWidget {
   final DateTime selectedDate;
   final Function(DateTime) onSelectDate;
-  final List<dynamic> openShiftDates;
 
-  WeeklyCalendar({required this.selectedDate, required this.onSelectDate,required this.openShiftDates});
+  WeeklyCalendar({required this.selectedDate, required this.onSelectDate});
 
   @override
   Widget build(BuildContext context) {
-    DateTime startOfWeek = selectedDate.subtract(Duration(days: selectedDate.weekday ));
+    DateTime startOfWeek = selectedDate.subtract(Duration(days: selectedDate.weekday - 1));
     List<DateTime> days = List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
 
     return Column(
@@ -503,37 +463,6 @@ class WeeklyCalendar extends StatelessWidget {
           ],
         ),
         SizedBox(height: 10.0),
-        // SingleChildScrollView(
-        //   scrollDirection: Axis.horizontal,
-        //   child: Row(
-        //     children: [
-        //       for (int i = 0; i < 7; i++)
-        //         GestureDetector(
-        //           onTap: () => onSelectDate(days[i]),
-        //           child: Container(
-        //             margin: EdgeInsets.symmetric(horizontal: 10.0),
-        //             padding: EdgeInsets.all(8.0),
-        //             decoration: BoxDecoration(
-        //               color: days[i].day == selectedDate.day ? Colors.orange : null,
-        //               borderRadius: BorderRadius.circular(8.0),
-        //             ),
-        //             child: Text(
-        //               DateFormat('d').format(days[i]),
-        //               style: TextStyle(
-        //                 fontWeight: days[i].day == selectedDate.day ? FontWeight.bold : FontWeight.normal,
-        //               ),
-        //             ),
-                 
-
-                    
-        //           ),
-                  
-        //         ),
-                
-        //     ],
-        //   ),
-        // ),
-
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -541,36 +470,19 @@ class WeeklyCalendar extends StatelessWidget {
               for (int i = 0; i < 7; i++)
                 GestureDetector(
                   onTap: () => onSelectDate(days[i]),
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        padding: EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: days[i].day == selectedDate.day ? Colors.orange : null,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Text(
-                          DateFormat('d').format(days[i]),
-                          style: TextStyle(
-                            fontWeight: days[i].day == selectedDate.day ? FontWeight.bold : FontWeight.normal,
-                          ),
-                        ),
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: days[i].day == selectedDate.day ? Colors.orange : null,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Text(
+                      DateFormat('d').format(days[i]),
+                      style: TextStyle(
+                        fontWeight: days[i].day == selectedDate.day ? FontWeight.bold : FontWeight.normal,
                       ),
-                      if (openShiftDates.contains(DateFormat('yyyy-MM-dd').format(days[i])))
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            width: 8.0,
-                            height: 8.0,
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                        ),
-                    ],
+                    ),
                   ),
                 ),
             ],

@@ -29,7 +29,7 @@ class ScheduledScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scheduled Shifts'),
+        title: Text("My Scheduled Shifts",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
       body: Center(
@@ -82,6 +82,8 @@ class ScheduledScreen extends StatelessWidget {
 try {
 DateTime inputDate = DateTime.parse(shift['dateOfSched']);
 formattedDate = DateFormat('EEEE, MM /dd').format(inputDate);
+formattedDate = DateFormat(' MM /dd').format(inputDate);
+
 print(formattedDate);
 }
 
@@ -135,21 +137,24 @@ catch (e) {
                                             ),
                                           ),
                                           Expanded(
-                                            flex: 2,
+                                            flex: 3,
                                             child: Column(
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               children: [
                                                 Text(
                                                   'Date of Shift',
                                                   style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12,
+                                                    color: Colors.black,
+                                                    
+
                                                   ),
                                                 ),
                                                 SizedBox(height: 8),
                                                 Text(
                                                   shift['dateOfSched'] == "" ? "No": formattedDate! ,
                                                 ),
+                                            SizedBox(height:MediaQuery.of(context).size.height/2 -410),
+
                                               ],
                                             ),
                                           ),

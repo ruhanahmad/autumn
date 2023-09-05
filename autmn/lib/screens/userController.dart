@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 class UserContoller extends GetxController  {
 
 String email="";
+String fname ="";
+String lname = "";
 
 
 }

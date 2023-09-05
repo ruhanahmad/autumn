@@ -64,6 +64,7 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+         type: BottomNavigationBarType.fixed, // Add this line
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -79,7 +80,7 @@ class _NavigationBarScreenState extends State<NavigationBarScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.article),
-            label: 'ALHC News',
+            label: 'News',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
