@@ -60,95 +60,96 @@ class MyShiftsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Pending Shifts',style: TextStyle(fontWeight: FontWeight.bold),),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Text(
-            //   'All Your Shifts Pickup',
-            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            // ),
-            SizedBox(height: 20),
-            Expanded(
-              child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: fetchPendingShifts(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Container();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-                    return Text('No shifts available');
-                  } else {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: (context, index) {
-                        var shift = snapshot.data![index];
-
-                            final inputFormat = DateFormat('HH:mm'); // 'HH:mm' represents 24-hour format
-  final outputFormat = DateFormat('h:mm a'); // 'h:mm a' represents 12-hour format with AM/PM
- String? strt ;
-  String? ebd ;
-  try {
-    final DateTime dateTime = inputFormat.parse(shift['time_start']);
-    final DateTime dateTimeebd = inputFormat.parse(shift['time_end']);
+    return WillPopScope(
+        onWillPop: () async {
+   
+         return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('My Pending Shifts',style: TextStyle(fontWeight: FontWeight.bold),),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Text(
+              //   'All Your Shifts Pickup',
+              //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              // ),
+              SizedBox(height: 20),
+              Expanded(
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: fetchPendingShifts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container();
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else if (snapshot.data == null || snapshot.data!.isEmpty) {
+                      return Text('No shifts available');
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          var shift = snapshot.data![index];
     
- strt  =  outputFormat.format(dateTime);
-  ebd =  outputFormat.format(dateTimeebd);
-  }
-   catch (e) {
-    // Handle parsing errors here
-   'Invalid Time';
-  }
-  String? formattedDate ;
-try {
-DateTime inputDate = DateTime.parse(shift['date']);
-formattedDate = DateFormat('EEEE, MM /dd').format(inputDate);
-print(formattedDate);
-}
-
-catch (e) {
-    // Handle parsing errors here
-   'Invalid Time';
-  }
-
-
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Material(
-                             borderRadius: BorderRadius.circular(15),
-                                              elevation: 20,
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: Container(
-                                
-                               decoration: BoxDecoration(
-                              
-                               // Replace with your desired background color
-                                borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
-                              ),
-                                
-                                margin: EdgeInsets.symmetric(horizontal: 16.0,),
-                               
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
+                              final inputFormat = DateFormat('HH:mm'); // 'HH:mm' represents 24-hour format
+      final outputFormat = DateFormat('h:mm a'); // 'h:mm a' represents 12-hour format with AM/PM
+     String? strt ;
+      String? ebd ;
+      try {
+      final DateTime dateTime = inputFormat.parse(shift['time_start']);
+      final DateTime dateTimeebd = inputFormat.parse(shift['time_end']);
+      
+     strt  =  outputFormat.format(dateTime);
+      ebd =  outputFormat.format(dateTimeebd);
+      }
+       catch (e) {
+      // Handle parsing errors here
+       'Invalid Time';
+      }
+      String? formattedDate ;
+    try {
+    DateTime inputDate = DateTime.parse(shift['date']);
+    formattedDate = DateFormat('EEEE, MM /dd').format(inputDate);
+    print(formattedDate);
+    }
+    
+    catch (e) {
+      // Handle parsing errors here
+       'Invalid Time';
+      }
+    
+    
+                          return 
+    
+    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 14.0),
+                      child: 
+                      Material(
+                        borderRadius: BorderRadius.circular(15),
+                        elevation: 20,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Container(
+                            
+                            margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            
+                            child:
+                            Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text(
+    Text(
                                               shift['approved'] == '1' ? 'Approved' : 'Pending',
                                               style: TextStyle(
                                                 color: shift['approved'] == '1' ? Colors.green : Colors.orange,
@@ -156,84 +157,226 @@ catch (e) {
                                                 fontSize: 20,
                                               ),
                                             ),
-                                            SizedBox(height: 8),
+    
+                                            SizedBox(height: 3),
                                             Text(
                                               shift['pos'],
-                                              style: TextStyle(fontSize: 18),
+                                              style: TextStyle(fontSize: 14),
                                             ),
-                                            SizedBox(height: 8),
+     SizedBox(height: 3),
                                             Text(
                                               '$strt - $ebd',
+                                              style: TextStyle(fontSize: 14),
                                             ),
                                             SizedBox(height: 8),
-                                            Text(
-                                              shift['bonus'] == "0" ? '' : 'Bonus: ${shift['bonus']}',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 3,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.end,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Date of Shift',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(height: 8),
-                                                    
-                                            Text(
-                                              formattedDate!, style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(height: 5,),
-ElevatedButton(
-                                   style: ElevatedButton.styleFrom(
-                                    
- padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                primary: Colors.red,
-                foregroundColor: Colors.white,
-                
-               
-                
-                ),
-
-                                      onPressed: () async {
+      
+    
+                                  ],),
+    
+                                     Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+    
+     Column(
+                                        children: [
+                                          GestureDetector(
+                                     
+                                        onTap: () {
+                           showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Cancel Shift'),
+                          content: Text('Are you sure?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog.
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Yes'),
+                              onPressed: () {
                                         try {
                                          _declineShift(shift["id"]);
                                            
                                         } catch (error) {
                                           print('Error accepting invitation: $error');
                                         }
-                                      },
-                                      child: Text('Cancel Shift',style: TextStyle(fontSize: 10),),
-                                    ),
-
-                                            SizedBox(height:MediaQuery.of(context).size.height/2 -420),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                Navigator.of(context).pop(); // Close the dialog.
+                              },
                             ),
-                          ),
+                          ],
                         );
                       },
                     );
-                  }
-                },
+                    },
+                                      // async {
+                                      //         try {
+                                      //    _declineShift(shift["id"]);
+                                           
+                                      //   } catch (error) {
+                                      //     print('Error accepting invitation: $error');
+                                      //   }
+                                      //       },
+                                        child: Container(
+                                          height: 22,
+                                          width: 90,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.red
+                                          ),
+                                          child: Center(child: Text("Cancel",style: TextStyle(fontSize: 15,color: Colors.white),)),
+                                        ),
+                                      ),
+                                         SizedBox(height: 2),
+                                          Text(
+                                              'Date of Shift',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          
+    
+                                          Text(
+                                              formattedDate!, style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+    
+                                        ],
+                                      )
+                                      
+                                      
+                                      
+                                     
+                                      
+                                        
+                                  ],),
+                                ],),
+                                shift["bonus"] == "0" ? Center(child: Text("")):Center(child: Text(" Bonus: \$${shift['bonus']} ",style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),)),
+                              ],
+                            )
+                            
+                            
+                          ),
+                        ),
+                      ),
+                    );
+                          
+    //                         Padding(
+    //                           padding: const EdgeInsets.symmetric(horizontal:30.0,vertical: 10.0),
+    //                           child: Material(
+    //                              borderRadius: BorderRadius.circular(15),
+    //                                               elevation: 20,
+    //                             child: Padding(
+    //                               padding: const EdgeInsets.all(12.0),
+    //                               child: Container(
+    //                                 width: 335,
+    //                                 height: 83,
+    //                                decoration: BoxDecoration(
+                                
+    //                                // Replace with your desired background color
+    //                                 borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+    //                               ),
+                                  
+    //                                 // margin: EdgeInsets.symmetric(horizontal: 16.0,),
+                                 
+    //                                 child: Padding(
+    //                                   padding: const EdgeInsets.all(4.0),
+    //                                   child: Row(
+    //                                     children: [
+    //                                       Column(
+    //                                         // crossAxisAlignment: CrossAxisAlignment.s,
+    //                                         // mainAxisAlignment: MainAxisAlignment.,
+    //                                         children: [
+    //                                           Text(
+    //                                             shift['approved'] == '1' ? 'Approved' : 'Pending',
+    //                                             style: TextStyle(
+    //                                               color: shift['approved'] == '1' ? Colors.green : Colors.orange,
+    //                                               fontWeight: FontWeight.bold,
+    //                                               fontSize: 20,
+    //                                             ),
+    //                                           ),
+    //                                           SizedBox(height: 3),
+    //                                           Text(
+    //                                             shift['pos'],
+    //                                             style: TextStyle(fontSize: 14),
+    //                                           ),
+    //                                           SizedBox(height: 3),
+    //                                           Text(
+    //                                             '$strt - $ebd',
+    //                                             style: TextStyle(fontSize: 14),
+    //                                           ),
+    //                                           SizedBox(height: 8),
+    //                                           Text(
+    //                                             shift['bonus'] == "0" ? '' : 'Bonus: ${shift['bonus']}',
+    //                                           ),
+    //                                         ],
+    //                                       ),
+    //                                       Column(
+    //                                         crossAxisAlignment: CrossAxisAlignment.end,
+    //                                         mainAxisAlignment: MainAxisAlignment.start,
+    //                                         children: [
+    //                                           Text(
+    //                                             'Date of Shift',
+    //                                             style: TextStyle(
+    //                                               color: Colors.black,
+    //                                               fontSize: 12,
+    //                                             ),
+    //                                           ),
+    //                                           SizedBox(height: 8),
+                                                    
+    //                                           Text(
+    //                                             formattedDate!, style: TextStyle(
+    //                                               color: Colors.black,
+    //                                               fontSize: 12,
+    //                                             ),
+    //                                           ),
+    //                                           SizedBox(height: 5,),
+    // ElevatedButton(
+    //                                    style: ElevatedButton.styleFrom(
+                                      
+    //  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+    //                 primary: Colors.red,
+    //                 foregroundColor: Colors.white,
+                  
+                 
+                  
+    //                 ),
+    
+    //                                       onPressed: () async {
+    //                                       try {
+    //                                        _declineShift(shift["id"]);
+                                           
+    //                                       } catch (error) {
+    //                                         print('Error accepting invitation: $error');
+    //                                       }
+    //                                       },
+    //                                       child: Text('Cancel Shift',style: TextStyle(fontSize: 10),),
+    //                                     ),
+    
+    //                                           SizedBox(height:MediaQuery.of(context).size.height/2 -420),
+    //                                         ],
+    //                                       ),
+    //                                     ],
+    //                                   ),
+    //                                 ),
+    //                               ),
+    //                             ),
+    //                           ),
+    //                         );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

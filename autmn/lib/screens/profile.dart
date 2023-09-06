@@ -39,7 +39,7 @@ UserContoller userContoller = Get.put(UserContoller());
 
       if (status == '200') {
         // Show a success snackbar
-          _showSnackbars('${message}');
+          _showSnackbars("Thank you, we will get back to you shortly");
       
       } else {
         // Show an error snackbar
@@ -88,170 +88,186 @@ UserContoller userContoller = Get.put(UserContoller());
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text('Profile Screen',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-          
+    return WillPopScope(
+        onWillPop: () async {
+   
+         return false;
+      },
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            title: Text('Profile Screen',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
+            
+            ),
+            centerTitle: true,
           ),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.orange,
-                      radius: 30.0,
-                      child: Text("${userContoller.fname.substring(0,1)}${userContoller.lname.substring(0,1)}",style: TextStyle(color: Colors.black),),
-                    ),
-                    SizedBox(width: 16.0),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Demo Account', style: TextStyle(fontSize: 18.0)),
-                        Text('demo@autumnhc.net'),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.settings),
-                      onPressed: () {
-                        // Handle settings button press
-                              AppSettings.openLocationSettings();
-                      },
-                    ),
-                    SizedBox(width: 8.0),
-                    Text('View Settings'),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: 
-                     (){
-                       showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Close Account'),
-                      content: Text('Are you sure you want to close your account?'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: Text('No'),
-                          onPressed: () {
-                            Navigator.of(context).pop(); // Close the dialog.
-                          },
-                        ),
-                        TextButton(
-                          child: Text('Yes'),
-                          onPressed: () {
-                            // Close the account (call your API).
-                            _requestCredentials();
-                            Navigator.of(context).pop(); // Close the dialog.
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                );
-                     }
-                      //  print("object");
-                      ,
-                    ),
-                    SizedBox(width: 8.0),
-                    Text('Close Account>>'),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        // Handle remove Face ID button press
-                      },
-                    ),
-                    SizedBox(width: 8.0),
-                    Text('Remove Face ID>>'),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                Row(
-                  children: [
-                    
-                  IconButton(
-                      icon: Icon(Icons.info, color: Colors.black),
-                      onPressed: () {
-                        // Handle remove Face ID button press
-                        showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text('Support Request'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: subjectController,
-                        decoration: InputDecoration(
-                          labelText: 'Subject',
-                        ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(29.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.orange,
+                        radius: 30.0,
+                        child: Text("${userContoller.fname.substring(0,1)}${userContoller.lname.substring(0,1)}",style: TextStyle(color: Colors.black),),
                       ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        controller: messageController,
-                        decoration: InputDecoration(
-                          labelText: 'Message',
-                        ),
-                        maxLines: 3,
+                      SizedBox(width: 16.0),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Demo Account', style: TextStyle(fontSize: 18.0)),
+                          Text('demo@autumnhc.net'),
+                        ],
                       ),
                     ],
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('Cancel'),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog.
-                      },
+                  SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                            // Handle settings button press
+                                  AppSettings.openLocationSettings();
+                          },
+                    child: Row(
+                      children: [
+                       
+                       
+                           Icon(Icons.settings),
+                     
+                        SizedBox(width: 8.0),
+                        Text('View Settings'),
+                      ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _sendSupportRequest();
-                        Navigator.of(context).pop(); // Close the dialog.
+                  ),
+                  SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                           showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Close Account'),
+                          content: Text('Are you sure you want to close your account?'),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('No'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Close the dialog.
+                              },
+                            ),
+                            TextButton(
+                              child: Text('Yes'),
+                              onPressed: () {
+                                // Close the account (call your API).
+                                _requestCredentials();
+                                Navigator.of(context).pop(); // Close the dialog.
+                              },
+                            ),
+                          ],
+                        );
                       },
-                      child: Text('Submit'),
+                    );
+                    },
+                    child: 
+                    Row(
+                      children: [
+                        
+                        
+                          Icon(Icons.delete, color: Colors.red),
+                       
+                       
+                          //  print("object");
+                        
+                        
+                        SizedBox(width: 8.0),
+                        Text('Close Account>>'),
+                      ],
                     ),
-                  ],
-                );
-              },
-            );
-                      },
+                  ),
+                  SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                     
+                     
+                         Icon(Icons.delete, color: Colors.red),
+                     
+                     
+                      SizedBox(width: 8.0),
+                      Text('Remove Face ID>>'),
+                    ],
+                  ),
+                  SizedBox(height: 20.0),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Support Request'),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          TextFormField(
+                            controller: subjectController,
+                            decoration: InputDecoration(
+                              labelText: 'Subject',
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          TextFormField(
+                            controller: messageController,
+                            decoration: InputDecoration(
+                              labelText: 'Message',
+                            ),
+                            maxLines: 3,
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        TextButton(
+                          child: Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Close the dialog.
+                          },
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _sendSupportRequest();
+                            Navigator.of(context).pop(); // Close the dialog.
+                          },
+                          child: Text('Submit'),
+                        ),
+                      ],
+                    );
+                                },
+                              );
+                    },
+                    child: Row(
+                      children: [
+                        
+                      
+                           
+                          Icon(Icons.info, color: Colors.black),
+                       
+                        
+                        SizedBox(width: 8.0),
+                        Text('Support>>'),
+                      ],
                     ),
-                    SizedBox(width: 8.0),
-                    Text('Support>>'),
-                  ],
-                ),
-                SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                  Get.offAllNamed('/login');
-                  },
-                  style: ElevatedButton.styleFrom(primary: Colors.orange),
-                  child: Text('Logout'),
-                ),
-              ],
+                  ),
+                  SizedBox(height: 20.0),
+                  ElevatedButton(
+                    onPressed: () {
+                    Get.offAllNamed('/login');
+                    },
+                    style: ElevatedButton.styleFrom(primary: Colors.orange),
+                    child: Text('Logout'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

@@ -6,11 +6,14 @@ import 'package:autmn/screens/bottomNavigation.dart';
 import 'package:autmn/screens/homescreen.dart';
 import 'package:autmn/screens/requestCredientials.dart';
 import 'package:autmn/screens/resetScreen.dart';
+import 'package:autmn/screens/sharedpref.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'userController.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -51,6 +54,17 @@ String playerID = '';
 
 
 //   }
+
+
+ Future<void> _logins() async {
+    final password = _passwordController.text;
+    if (_rememberPassword) {
+      await SharedPreferencesService.savePassword(password);
+    }
+    
+    // Perform your login logic here
+    // ...
+  }
    Future<void> _login() async {
 
 
@@ -105,6 +119,7 @@ userContoller.update();
         employeeKey: employeeKey,
         playerID: playerID,
       ),);
+      _logins();
     } else {
        _showSnackbar('Please Provide Correct Credientials');
       // Error handling for unsuccessful login
@@ -118,11 +133,69 @@ userContoller.update();
   }
 
    bool _obscureText = true; 
-   
+   Future<void> _authenticate() async {
+  final localAuth = LocalAuthentication();
+
+  try {
+    bool canCheckBiometrics = await localAuth.canCheckBiometrics;
+    if (canCheckBiometrics) {
+      List<BiometricType> availableBiometrics = await localAuth.getAvailableBiometrics();
+      
+      if (availableBiometrics.contains(BiometricType.face)) {
+        bool isAuthenticated = await localAuth.authenticate(
+          localizedReason: 'Authenticate to access the app', // Displayed to the user
+        
+          options: AuthenticationOptions(
+              useErrorDialogs: true, // Show system dialogs (e.g., for Face ID)
+          stickyAuth: true, // Keep the biometric prompt open until success or failure
+          )
+        );
+
+        if (isAuthenticated) {
+          // Authentication successful
+          print('Authentication successful');
+        } else {
+          // Authentication failed
+          print('Authentication failed');
+        }
+      } else {
+        // Face ID is not available on this device
+        print('Face ID is not available on this device');
+      }
+    } else {
+      // Biometrics are not available on this device
+      print('Biometrics are not available on this device');
+    }
+  } catch (e) {
+    // Handle errors here
+    print('Error: $e');
+  }
+}
+bool _rememberPassword = false;
+
+ @override
+  void initState() {
+    super.initState();
+    _loadPassword();
+  }
+
+  Future<void> _loadPassword() async {
+    print("sadasdas" + _passwordController.text);
+    final savedPassword = await SharedPreferencesService.getPassword();
+    if (savedPassword != null) {
+      setState(() {
+        _passwordController.text = savedPassword;
+        _rememberPassword = true;
+      });
+
+      
+    }
+  }
   @override
   Widget build(BuildContext context) {
     
-    return WillPopScope(
+    return 
+    WillPopScope(
        onWillPop: () async {
          return await _confirmExit(context); // Show confirmation dialog and handle exit.
         // return false;
@@ -205,6 +278,17 @@ userContoller.update();
                   //   ],
                   // ),
                   SizedBox(height: 20.0),
+
+                              CheckboxListTile(
+              title: Text('Remember Password'),
+              value: _rememberPassword,
+              onChanged: (value) {
+                setState(() {
+                  _rememberPassword = value!;
+                });
+              },
+            ),
+
                   Container(
                     width: 420.0,
                     height: 49.0,
@@ -249,7 +333,7 @@ userContoller.update();
                     child: Container(
                       width: 180.0,
                       height: 35.0,
-                      color: Color(0xFFD9D9D9),
+                      // color: Color(0xFFD9D9D9),
                       child: Center(
                         child: Text(
                           'Forgot Password',
@@ -263,9 +347,14 @@ userContoller.update();
                     'Any questions and issues please email',
                     style: TextStyle(fontStyle: FontStyle.italic, color: Colors.black54),
                   ),
-                  Text(
-                    'support@autumntrack.com',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  GestureDetector(
+                    onTap: () {
+                       _authenticate();
+                    },
+                    child: Text(
+                      'support@autumntrack.com',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ],
               ),

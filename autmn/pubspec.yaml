@@ -35,6 +35,8 @@ dependencies:
   intl:
   onesignal_flutter:
   app_settings: ^4.3.1
+  local_auth: ^2.1.7
+  shared_preferences: 
 
 
 
