@@ -138,125 +138,129 @@ class MyShiftsScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(5.0),
                           child: Container(
                             
-                            margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                            // margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                             
                             child:
                             Column(
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                Padding(
+                                  padding: const EdgeInsets.all(0.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-    Text(
-                                              shift['approved'] == '1' ? 'Approved' : 'Pending',
-                                              style: TextStyle(
-                                                color: shift['approved'] == '1' ? Colors.green : Colors.orange,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-    
-                                            SizedBox(height: 3),
-                                            Text(
-                                              shift['pos'],
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-     SizedBox(height: 3),
-                                            Text(
-                                              '$strt - $ebd',
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                            SizedBox(height: 8),
-      
-    
-                                  ],),
-    
-                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-    
-     Column(
+                                    Text(
+                                                shift['approved'] == '1' ? 'Approved' : 'Pending',
+                                                style: TextStyle(
+                                                  color: shift['approved'] == '1' ? Colors.green : Colors.orange,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                    
+                                              SizedBox(height: 3),
+                                              Text(
+                                                shift['pos'],
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                     SizedBox(height: 3),
+                                              Text(
+                                                '$strt - $ebd',
+                                                style: TextStyle(fontSize: 14),
+                                              ),
+                                              SizedBox(height: 8),
+                                      
+                                    
+                                    ],),
+                                    
+                                       Column(
+                                       crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
-                                          GestureDetector(
-                                     
-                                        onTap: () {
-                           showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text('Cancel Shift'),
-                          content: Text('Are you sure?'),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('No'),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // Close the dialog.
-                              },
-                            ),
-                            TextButton(
-                              child: Text('Yes'),
-                              onPressed: () {
-                                        try {
-                                         _declineShift(shift["id"]);
-                                           
-                                        } catch (error) {
-                                          print('Error accepting invitation: $error');
-                                        }
-                                Navigator.of(context).pop(); // Close the dialog.
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    },
-                                      // async {
-                                      //         try {
-                                      //    _declineShift(shift["id"]);
-                                           
-                                      //   } catch (error) {
-                                      //     print('Error accepting invitation: $error');
-                                      //   }
-                                      //       },
-                                        child: Container(
-                                          height: 22,
-                                          width: 90,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.red
+                                    
+                                     Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                       
+                                          onTap: () {
+                                                           showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return AlertDialog(
+                                                          title: Text('Cancel Shift'),
+                                                          content: Text('Are you sure?'),
+                                                          actions: <Widget>[
+                                                            TextButton(
+                                                              child: Text('No'),
+                                                              onPressed: () {
+                                  Navigator.of(context).pop(); // Close the dialog.
+                                                              },
+                                                            ),
+                                                            TextButton(
+                                                              child: Text('Yes'),
+                                                              onPressed: () {
+                                          try {
+                                           _declineShift(shift["id"]);
+                                             
+                                          } catch (error) {
+                                            print('Error accepting invitation: $error');
+                                          }
+                                  Navigator.of(context).pop(); // Close the dialog.
+                                                              },
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                    },
+                                        // async {
+                                        //         try {
+                                        //    _declineShift(shift["id"]);
+                                             
+                                        //   } catch (error) {
+                                        //     print('Error accepting invitation: $error');
+                                        //   }
+                                        //       },
+                                          child: Container(
+                                            height: 22,
+                                            width: 90,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.red
+                                            ),
+                                            child: Center(child: Text("Cancel",style: TextStyle(fontSize: 15,color: Colors.white),)),
                                           ),
-                                          child: Center(child: Text("Cancel",style: TextStyle(fontSize: 15,color: Colors.white),)),
                                         ),
-                                      ),
-                                         SizedBox(height: 2),
-                                          Text(
-                                              'Date of Shift',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
+                                           SizedBox(height: 2),
+                                            Text(
+                                                'Date of Shift',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                ),
                                               ),
-                                            ),
-                                          
-    
-                                          Text(
-                                              formattedDate!, style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 14,
+                                            
+                                    
+                                            Text(
+                                                formattedDate!, style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14,
+                                                ),
                                               ),
-                                            ),
-    
-                                        ],
-                                      )
-                                      
-                                      
-                                      
-                                     
-                                      
+                                    
+                                          ],
+                                        )
                                         
+                                        
+                                        
+                                       
+                                        
+                                          
+                                    ],),
                                   ],),
-                                ],),
+                                ),
                                 shift["bonus"] == "0" ? Center(child: Text("")):Center(child: Text(" Bonus: \$${shift['bonus']} ",style: TextStyle(color: Colors.red,fontSize: 14,fontWeight: FontWeight.bold),)),
                               ],
                             )

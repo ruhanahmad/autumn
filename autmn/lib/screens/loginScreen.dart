@@ -58,8 +58,9 @@ String playerID = '';
 
  Future<void> _logins() async {
     final password = _passwordController.text;
+    final email = _emailController.text;
     if (_rememberPassword) {
-      await SharedPreferencesService.savePassword(password);
+      await SharedPreferencesService.savePassword(password,email);
     }
     
     // Perform your login logic here
@@ -182,9 +183,11 @@ bool _rememberPassword = false;
   Future<void> _loadPassword() async {
     print("sadasdas" + _passwordController.text);
     final savedPassword = await SharedPreferencesService.getPassword();
-    if (savedPassword != null) {
+     final savedemail = await SharedPreferencesService.getemail();
+    if (savedPassword != null && savedemail != null) {
       setState(() {
         _passwordController.text = savedPassword;
+         _emailController.text = savedemail;
         _rememberPassword = true;
       });
 
