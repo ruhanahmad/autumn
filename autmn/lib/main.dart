@@ -4,8 +4,33 @@ import 'package:autmn/screens/testtwo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+
+import 'screens/notificationController.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>;
+
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
+//    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  
+
+
+// OneSignal.shared.setAppId("cfc491ba-dd50-4822-90a3-814ca06bc214");
+// OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
+
+// print(event.notification);
+
+// event.complete(event.notification);
+// });
+// // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+// OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+//     print("Accepted permission: $accepted");
+// });
+//     OneSignal.shared.setNotificationOpenedHandler(handleNotificationOpened);
+
+ 
+  
 }
 
 class MyApp extends StatelessWidget {

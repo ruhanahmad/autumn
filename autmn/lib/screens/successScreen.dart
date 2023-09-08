@@ -32,7 +32,11 @@ class SuccessScreen extends StatelessWidget {
             ),
             SizedBox(height: 10),
       approved == "1" || userInstant == "1" ?
-            Row(
+             Text('Shift has been added to your schedule  ')
+            :
+          
+            
+              Row(
               children: [
                 SizedBox(width: MediaQuery.of(context).size.width/2-150),
              Column(
@@ -43,10 +47,7 @@ class SuccessScreen extends StatelessWidget {
              ),
                 
               ],
-            ):
-             Text('Shift has been added to your schedule  '),
-            
-            
+            ),
             
             
             SizedBox(height: 20),

@@ -269,11 +269,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
          startOfWeek = selectedDate.subtract(Duration(days:selectedDate.weekday ));
 
       }
-// g meri jan or koi masla ?
-// kya kahu ab,ap hero ho hero,lots of love
-//loooooooooooooooooooooooooots of love
- //mjy thra sa smjha b do kya ho rha tha
- // dekho weeday jab ham selected date ka dekhte hain na linkdin per aajao main office se bahir jaraha clok
+
       //DateTime startOfWeek = selectedDate.subtract(Duration(days:0 ));
     List<DateTime> days = List.generate(7, (index) => startOfWeek.add(Duration(days: index)));
     return WillPopScope(
@@ -400,95 +396,12 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
                     GestureDetector(
                       onTap: () async{
                       // await  widget.fetchData;
-                      //yaha sy vo select kr rha
+                     
                         _selectDate(days[i]);
-                        //ya vala ?
+                   
                         print("asdasdasdsdasdasdasddddddddddddddddd ${days[i]}");
                         print("Sasdasdasdasdas");
-                  //woh na aik masla hay meri ex rabta kar rahi hai ab mere saath
-                  //ya bht bra msla h,q kr rhi h ab, kehti hay shadi karni hay mene kaha men shadi k liye tyar nai
-                  // ab usko nzar aaraha hay na k men abu dhabi men settle ho raha hun
-                  //ja/b /g ya to koi bt na hui k settle h to shadi ya to pyr na hua
-                  // han na woh sirf apna faida dekh rahi hay usko mene chora bhi isi selfish attitude k liye tha
-                  //Allah e bhtr jantab but my suggestion is k ap us sy kro jo apko like kry vrna pysy bd mai bht mushkil hta aysy logou sth guzara krna
-                  //woh itni ajeeb hay usne mujhe saaaf kaha kehti agar tum mujhe ghar pesa gari de sakte ho to shadi kar lo
-                  // koi or larka bhi de ga to main kar loon gi koi pyar wyar nai hay mene kaha men pagal hun kya
-                  // yr talha ap na pro aysy logou k pngy mai ap or nature k ho,aysy selfishness etc ya aysy log suit nh krtty apko
-                  //baat ye hay k agar pyar hota to ye mere dubai anay se pehle hami bharti shadi ki
-                  // k vohi na aik person saf zahir hselfiehs h to q us sy bt krni to jo hay na faida kya ? agar koi waqai mujhe chahti hay to woh har haal men rahay gi
-                  /// ye paisa job ghar gari iska kya hay aaj job hay mere pass kal mujjhe fire kar dein ? men zero 
-                  /// yahe to bt h k ap k sth jo rhna chahy us k sth rhty h,materilistic logou sy bhhhhhhhht dor rhna chahy
-                  /// i hate materialism and things,honesty pyr insaniyat maishow hta,remaioning are robots i am already very door 
-                  /// wo morroco main hay,yani pakistani nh h ?aapko to mene pehle hi btaya k zindagi main kabhi pakistani friend tak nai bani
-                  /// na mene koshish ki ksi larki se baat karne ki , kabhi bhi ye morocco wali bhi khud hi mari thi keht
-                  /// kehti you are very handsom is se pehle china wali bhi 
-                  /// sch btau to kisi morocoo vali sy na krna,es sy acha chinese ko muslim kr k krlo vo log bht loyal hty kam k sth b insan k sth b
-                  /// sach btaon to hamesha na mujhe zindagi men pehle larki ka hi message aaya hay mene kabhi nai kia ksi larki ko message
-                  /// aapko bhi mera number ksi ne dia tha mujhe usne btaya tha k aap student hain
-                  /// or kya ap legend apko ave to nh na khti
-                  /// acha facebook per larkion ki aapko trick btata hun pehle woh message karti hain 
-                  /// uske baad jab larka jwab deta hay saath hi voice bhej dein gi 
-                  /// world is full of faaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaknesss woh fake nai hoti 
-                  /// woh an parh larkian hoti hain jinke pass koi kaam nai hota ghar mein mobile mila hua hay bas
-                  /// larkon se lagi rehti hain 
-                  /// vo lrky b ave hty h phr jo bs physical hny k liyay reltion mai aty h ot lrkiya b bas aisa hi hay na
-                  /// dil ko dil se rah jesi woh hoti hain wesa agay se facebook per dhoond leti hain 
-                  /// pichle aik hafte main do larkion se baat hui aik larki ka meehna pehle message aaya tha mene usko maheny baad jwab ida
-                  /// dia messenger khola to requests men tha unka bhi mene mama ko btaya k aise hamaray city ki larki k message aay
-                  /// or woh kehti k woh aalima thi chlooooooooooooooooooo g
-                  /// ssahe h bae saeh h
-                  /// or usne snapchat per add kia 
-                  /// or tahajud or fajar ko streak bhejti thi 
-                  /// hahah islamic nibbi aho men uskko snapchat se remove kar dia pehle usne mujhe facebook re remove kia do din baad mene snapchat se kar dia
-                  /// uske baad uska messag eaya kehti tumne snachat se remove kia mene kahan yes kehti acha badla lia 
-                  /// mene kaha ofcourse phir woh block kar gai 
-                  /// mai sch btau according to your nature,apko bs professional lrki jo kam careero or ho9nest ho vo suit krti
-                  /// decent ho,kam b krti ho or professional, ya jo lrkiya hti jn ko sara din eshq k elava kam nh hta y bs
-                  /// i think khumar h,asliyat bd mai vaziya hti h larkion ko apne larki hone per proud hota hay 
-                  /// or attitude dikhati hain k ham larkian hain pta nai larke marte hain hamaray liye 
-                  /// is liye attitude dikhati hain or men ksi ka attitude nai dekhta gender based attitude 
-                  /// mai jtna judge kia h lrki hna koi produ ki bt nh,its just a gender,lrka zyada Allah ny mzboot or haseen bnaya h
-                  /// hmary ulta hisab h society mai hr ulti chz ko hm ny bs hype create ki h js sy etna nuqsan hora
-                  /// ye jo facebook se aati hain na inka experience in jese larkon k saath hota hay q k woh larkon k pallay kuch nai hota 
-                  /// thuray hotay hain phir jab ye ham jeson takrti hain zaleel ho k bhaag jati hain hamary pass atitude dekhne ka time nai hay
-                  /// koi mere level ki ho kaam aata ho mujse zyada 
-                  /// to main uske nakhre bhi dekhun ga attitude bhi k bai professional larki hay skills hain education hay 
-                  /// koi to baat ho na attitude dikhanay ki k nai ?
-                  /// ary vohi na kam chahy zyada na ata ho lakin apny kam mai professional decent and good girl ho jo
-                  /// fzzol chezaou mai na pry,phr hr chz ka apna mza hta h insan acha mlna chahy
-                  /// chalo chado g sanu ki asi ty apne ghar walyan lai kama ray wan filhaal 
-                  /// i beleive you find pretiest soul
-                  /// meri dadi aman mere papa ko keh rahin thin k meri shadi phupho ki beti se kar dein jo 6th class se bhagi hui hay 
-                  /// ap ya news sun k or agy bhaag jao kbhi ap[ni chocies py compromise na krna,ya hq lrkou k pas
-                  /// es society mai phr b h ,lrkiou ki to aksr sunin nh jati jysy merty ghr h
-                  /// lakin i suggest you hmysha dykh bal k insan dhndhna js sy k sth zndgi gzarni
-                  /// phr yahe dadi or parents hty jo khty koi bt nh sbr krlo hm sy glti hgae
-                  /// ap koi glti na krny dena] ye baat 3 4 saal purani hay to papa ne bahana bna dia k degree kar raha hay
-                  /// bs ap khd choose krna ya agr parents choose kry to uski fullverification krlena
-                  /// parents hi karein gay mere pass itna akhtyar nai hay ab
-                  /// ajy ga ekhtyar  ap thra sa jb hjhao gy
-                  /// mujhe ye pta hay k mujhe mere jesi mil jay gi Allah ne bnai hogi 
-                  /// mene aaj tak ksi larki ko touch bhi nai kia 
-                  /// han online thori boti thark karte rehte hain haha
-                  /// hyeeee kya tb h apkli
-                  /// ye bas emojis or bas or kuch nai 
-                  /// aik larki idhar ki thi dubai men meri colleague punjabi woh bhi mari pari thi mere uper 
-                  /// lekin mene kabhi gor nai kia usne saal baad mujhe btaya haha k tumne mujhe woh shadi k chakar main thi
-                  /// uske saath dubai office main dhai maheeny kam kia halanke men usko aisa koi sign nai dia apne kaam se kaam
-                  /// bas phir bhi saal baad mene poocha k tumhein aisa kya nzar aaya kehti you are very caring w
-                  /// to yani ap caring ho
-                  /// pta nai ye caring kya hota hay
-                  /// care krna ehsas krna ye to insaniat hy apne ghar se banda seekhta hay k doosron ka khyal rakhna chahiye
-                  /// aj kkll vbo insiyat km h na lgoou mai es liyay jah sy mily vo khty h youna are caring hla k ya chz aam hni chahy
-                  /// bilkul men khud yhi kehta hun ye to sunnat hay hamein mili hui k doosron ka khyal rakhien madad karein etc..
-                  /// baki larkon mein thark is natural haha
-                  /// agar aap ye kahein k larka bilkul bhi larki ki traf mayl hi na ho gender attraction hi na ho 
-                  /// to woh larka nai usko doctor se chek karwana parega ye mufti tariq masood ne kaha hay haha
-                  /// yar mein idhar very lonely hun pehle aap kabh onlihne hoti thin koi batein shatein ho jati thin aaj kal to bas
-                  /// bilkul hi khtm ab mai online any kikoshsibh krti hu zyada tr abhi na safai ho rai hay main sim on karun ga 
-                  /// dubai wali to aap whatsapp bna lena to vo extra sim h? yes
-                  /// acha thk h
-                  /// ya vala ui ka issue ? woh dikhao kahan hay 
+                 
                       } ,
                       child: Stack(
                         children: [

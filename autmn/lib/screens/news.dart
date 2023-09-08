@@ -3,7 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 
-class NewsScreen extends StatelessWidget {
+class NewsScreen extends StatefulWidget {
+  @override
+  State<NewsScreen> createState() => _NewsScreenState();
+}
+
+class _NewsScreenState extends State<NewsScreen> {
   Future<List<Map<String, dynamic>>> fetchNews() async {
     final apiUrl = 'https://sandbox1.autumntrack.com/api/v2/news/?apikey=MYhsie8n4&fac=Autumn%20Demo&position=RN';
 
@@ -29,6 +34,15 @@ class NewsScreen extends StatelessWidget {
           title: Text('News',style: TextStyle(fontWeight: FontWeight.bold),),
           centerTitle: true,
           automaticallyImplyLeading: false,
+                  actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              // Call fetchData() and trigger a refresh
+              setState(() {});
+            },
+          ),
+        ],
         ),
         body: FutureBuilder<List<Map<String, dynamic>>>(
           future: fetchNews(),

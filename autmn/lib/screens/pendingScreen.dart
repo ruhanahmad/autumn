@@ -8,8 +8,14 @@ import 'package:intl/intl.dart';
 
 
 
-class MyShiftsScreen extends StatelessWidget {
+class MyShiftsScreen extends StatefulWidget {
+  @override
+  State<MyShiftsScreen> createState() => _MyShiftsScreenState();
+}
+
+class _MyShiftsScreenState extends State<MyShiftsScreen> {
    UserContoller userContoller = Get.put(UserContoller()); 
+
   Future<List<Map<String, dynamic>>> fetchPendingShifts() async {
     final apiUrl =
         'https://sandbox1.autumntrack.com/api/v2/pending/?apikey=MYhsie8n4&email=${userContoller.email}';
@@ -24,8 +30,6 @@ class MyShiftsScreen extends StatelessWidget {
       throw Exception('Failed to fetch pending shifts');
     }
   }
-
-
 
    Future<void> _declineShift(String id) async {
    
@@ -51,9 +55,11 @@ class MyShiftsScreen extends StatelessWidget {
       _showSnackbar('Error occurred. Please try again later.');
     }
   }
+
   void _showSnackbars(String message) {
   Get.snackbar("Success", message);
   }
+
    void _showSnackbar(String message) {
   Get.snackbar("Error", message);
   }
@@ -69,7 +75,17 @@ class MyShiftsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('My Pending Shifts',style: TextStyle(fontWeight: FontWeight.bold),),
           centerTitle: true,
-          automaticallyImplyLeading: false,
+           automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              // Call fetchData() and trigger a refresh
+              setState(() {});
+            },
+          ),
+        ],
+
         ),
         body: Center(
           child: Column(
