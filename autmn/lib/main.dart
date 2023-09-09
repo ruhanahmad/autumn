@@ -1,3 +1,4 @@
+import 'package:autmn/screens/biometric.dart';
 import 'package:autmn/screens/loginScreen.dart';
 import 'package:autmn/screens/test.dart';
 import 'package:autmn/screens/testtwo.dart';
@@ -9,25 +10,29 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'screens/notificationController.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>;
-
+void handleNotificationOpened(OSNotificationOpenedResult result) {
+  // Handle opened notification here
+  print('Notification opened: ${result.notification.jsonRepresentation()}');
+  print('Additional data: ${result.notification.additionalData}');
+}
 void main() {
   runApp( MyApp());
-//    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   
 
 
-// OneSignal.shared.setAppId("cfc491ba-dd50-4822-90a3-814ca06bc214");
-// OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
+OneSignal.shared.setAppId("40d76e30-4687-4a3e-8558-2e808cb47c5c");
+OneSignal.shared.setNotificationWillShowInForegroundHandler((OSNotificationReceivedEvent event) {
 
-// print(event.notification);
+print(event.notification);
 
-// event.complete(event.notification);
-// });
-// // The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
-// OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-//     print("Accepted permission: $accepted");
-// });
-//     OneSignal.shared.setNotificationOpenedHandler(handleNotificationOpened);
+event.complete(event.notification);
+});
+// The promptForPushNotificationsWithUserResponse function will show the iOS or Android push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+});
+    OneSignal.shared.setNotificationOpenedHandler(handleNotificationOpened);
 
  
   
@@ -67,7 +72,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home:LoginScreen(),
+      home:
+      LoginScreen(),
+      // BiometricPermissionPage(),
     );
   }
 }

@@ -279,6 +279,7 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
       },
       child: Scaffold(
         appBar: AppBar(
+          
           title: GestureDetector(
             onTap: (){
               // acceptInvitations();
@@ -288,6 +289,15 @@ Future<Map<String, dynamic>> acceptInvitation(String id, String userInstantAccep
             child: Text('Open Shifts',style: TextStyle(fontWeight: FontWeight.bold),)),
           centerTitle: true,
           automaticallyImplyLeading: false,
+          actions: [
+                IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              // Call fetchData() and trigger a refresh
+              setState(() {});
+            },
+          ),
+          ],
         ),
         body:
         // GetBuilder<UserContoller> (builder:(context,) ,)

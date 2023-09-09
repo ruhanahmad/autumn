@@ -151,7 +151,7 @@ class _MyShiftsScreenState extends State<MyShiftsScreen> {
                         borderRadius: BorderRadius.circular(15),
                         elevation: 20,
                         child: Padding(
-                          padding: const EdgeInsets.all(5.0),
+                          padding: const EdgeInsets.all(15.0),
                           child: Container(
                             
                             // margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),

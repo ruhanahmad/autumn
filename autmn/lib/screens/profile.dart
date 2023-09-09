@@ -1,17 +1,26 @@
 import 'dart:convert';
 
 import 'package:autmn/screens/loginScreen.dart';
+import 'package:autmn/screens/sharedpref.dart';
 import 'package:autmn/screens/userController.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
  import 'package:app_settings/app_settings.dart';
 
 import 'package:http/http.dart' as http;
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
 UserContoller userContoller = Get.put(UserContoller());
+
  TextEditingController subjectController = TextEditingController();
+
   TextEditingController messageController = TextEditingController();
 
   Future<void> _sendSupportRequest() async {
@@ -52,7 +61,6 @@ UserContoller userContoller = Get.put(UserContoller());
     }
   }
 
-
   Future<void> _requestCredentials() async {
    
 
@@ -77,15 +85,26 @@ UserContoller userContoller = Get.put(UserContoller());
       _showSnackbar('Error occurred. Please try again later.');
     }
   }
+
   void _showSnackbars(String message) {
   Get.snackbar("Success", message);
   }
+
    void _showSnackbar(String message) {
   Get.snackbar("Error", message);
   }
- 
-
-
+bool bioMetricEnabled = false;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      SharedPreferencesService.getBiometricStatus().then((value) {
+        setState(() {
+          bioMetricEnabled = value;
+        });
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -188,6 +207,21 @@ UserContoller userContoller = Get.put(UserContoller());
                     ),
                   ),
                   SizedBox(height: 20.0),
+
+                   ListTile(
+                    leading: Icon(Icons.lock),
+                    title: Text('Biometric Authentication'),
+                    trailing: CupertinoSwitch(
+                      value: bioMetricEnabled,
+                      onChanged: (bool value) {
+                        setState(() {
+                          bioMetricEnabled = value;
+                        });
+                        SharedPreferencesService.saveBiometricStatus(value);
+                      },
+                    ),
+                  ),
+                    SizedBox(height: 20.0),
                   Row(
                     children: [
                      
